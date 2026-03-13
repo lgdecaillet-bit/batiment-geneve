@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html lang="fr" style="scroll-behavior:smooth;">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Entreprise de Bâtiment Genève</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --cream: #F2EDE4;
+    --charcoal: #1A1A1A;
+    --warm-gray: #8A8274;
+    --accent: #C4502A;
+    --accent-dark: #A33D1E;
+    --light-stone: #E8E2D6;
+    --white: #FAFAF8;
+    --gold: #B8963E;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: 'Outfit', sans-serif; background: var(--cream); color: var(--charcoal); overflow-x: hidden; }
+
+  /* SCROLL REVEAL */
+  .reveal { opacity: 0; transform: translateY(50px); transition: opacity 0.8s cubic-bezier(0.16,1,0.3,1), transform 0.8s cubic-bezier(0.16,1,0.3,1); }
+  .reveal.visible { opacity: 1; transform: translateY(0); }
+  .reveal-scale { opacity: 0; transform: scale(0.92); transition: opacity 0.8s cubic-bezier(0.16,1,0.3,1), transform 0.8s cubic-bezier(0.16,1,0.3,1); }
+  .reveal-scale.visible { opacity: 1; transform: scale(1); }
+  .stagger-1 { transition-delay: 0.1s; } .stagger-2 { transition-delay: 0.2s; } .stagger-3 { transition-delay: 0.3s; }
+  .stagger-4 { transition-delay: 0.4s; } .stagger-5 { transition-delay: 0.5s; } .stagger-6 { transition-delay: 0.6s; }
+
+  /* NAV */
+  nav { position: fixed; top: 0; left: 0; right: 0; z-index: 1000; display: flex; justify-content: space-between; align-items: center; padding: 20px 60px; background: rgba(242,237,228,0.92); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); border-bottom: 1px solid rgba(26,26,26,0.06); transition: all 0.5s cubic-bezier(0.16,1,0.3,1); }
+  nav.scrolled { padding: 12px 60px; box-shadow: 0 4px 30px rgba(0,0,0,0.06); background: rgba(242,237,228,0.97); }
+  .logo { display: flex; align-items: center; gap: 14px; }
+  .logo-icon { width: 42px; height: 42px; background: var(--charcoal); display: flex; align-items: center; justify-content: center; border-radius: 6px; transition: transform 0.3s; }
+  .logo:hover .logo-icon { transform: rotate(-6deg) scale(1.05); }
+  .logo-icon svg { width: 24px; height: 24px; }
+  .logo-text { font-family: 'DM Serif Display', serif; font-size: 22px; letter-spacing: -0.5px; }
+  .logo-text span { color: var(--accent); }
+  .nav-links { display: flex; gap: 36px; list-style: none; }
+  .nav-links a { text-decoration: none; color: var(--charcoal); font-size: 14px; font-weight: 500; letter-spacing: 0.5px; text-transform: uppercase; position: relative; transition: color 0.3s; }
+  .nav-links a::after { content: ''; position: absolute; bottom: -4px; left: 0; width: 0; height: 2px; background: var(--accent); transition: width 0.4s cubic-bezier(0.16,1,0.3,1); }
+  .nav-links a:hover { color: var(--accent); }
+  .nav-links a:hover::after { width: 100%; }
+  .hamburger { display: none; background: none; border: none; cursor: pointer; padding: 8px; z-index: 1001; }
+  .hamburger span { display: block; width: 24px; height: 2px; background: var(--charcoal); margin: 5px 0; transition: all 0.4s cubic-bezier(0.16,1,0.3,1); }
+  .hamburger.active span:nth-child(1) { transform: rotate(45deg) translate(5px,5px); }
+  .hamburger.active span:nth-child(2) { opacity: 0; }
+  .hamburger.active span:nth-child(3) { transform: rotate(-45deg) translate(5px,-5px); }
+  .nav-cta { background: var(--charcoal); color: var(--cream) !important; padding: 12px 28px; border-radius: 4px; text-transform: uppercase !important; font-size: 13px !important; letter-spacing: 1px !important; transition: all 0.4s cubic-bezier(0.16,1,0.3,1) !important; }
+  .nav-cta:hover { background: var(--accent) !important; color: white !important; transform: translateY(-2px); box-shadow: 0 6px 20px rgba(196,80,42,0.3); }
+  .nav-cta::after { display: none !important; }
+
+  /* HERO */
+  .hero { min-height: 100vh; display: flex; align-items: center; padding: 140px 60px 80px; position: relative; overflow: hidden; }
+  .hero::before { content: ''; position: absolute; top: -200px; right: -200px; width: 700px; height: 700px; background: radial-gradient(circle, rgba(196,80,42,0.06) 0%, transparent 70%); border-radius: 50%; animation: floatOrb 8s ease-in-out infinite; }
+  @keyframes floatOrb { 0%,100% { transform: translate(0,0); } 50% { transform: translate(-30px,20px); } }
+  .hero-content { max-width: 680px; position: relative; z-index: 2; }
+  .hero-tag { display: inline-flex; align-items: center; gap: 10px; background: var(--charcoal); color: var(--cream); padding: 8px 18px; border-radius: 30px; font-size: 12px; font-weight: 600; letter-spacing: 2px; text-transform: uppercase; margin-bottom: 32px; animation: slideUp 0.8s cubic-bezier(0.16,1,0.3,1); }
+  .hero-tag .dot { width: 6px; height: 6px; background: var(--accent); border-radius: 50%; animation: pulse 2s ease-in-out infinite; }
+  @keyframes pulse { 0%,100% { opacity:1; transform:scale(1); } 50% { opacity:0.5; transform:scale(1.4); } }
+  .hero h1 { font-family: 'DM Serif Display', serif; font-size: clamp(48px,6vw,80px); line-height: 1.05; letter-spacing: -2px; margin-bottom: 28px; animation: slideUp 0.8s cubic-bezier(0.16,1,0.3,1) 0.1s both; }
+  .hero h1 em { font-style: italic; color: var(--accent); display: inline-block; animation: accentReveal 1.2s cubic-bezier(0.16,1,0.3,1) 0.5s both; }
+  @keyframes accentReveal { from { opacity:0; transform:translateY(20px) rotate(-2deg); } to { opacity:1; transform:translateY(0) rotate(0); } }
+  .hero p { font-size: 18px; line-height: 1.7; color: var(--warm-gray); max-width: 520px; margin-bottom: 44px; animation: slideUp 0.8s cubic-bezier(0.16,1,0.3,1) 0.2s both; }
+  .hero-actions { display: flex; gap: 16px; animation: slideUp 0.8s cubic-bezier(0.16,1,0.3,1) 0.3s both; }
+  .btn-primary { display: inline-flex; align-items: center; gap: 10px; background: var(--accent); color: white; padding: 16px 36px; font-size: 14px; font-weight: 600; letter-spacing: 1px; text-transform: uppercase; text-decoration: none; border-radius: 4px; transition: all 0.4s cubic-bezier(0.16,1,0.3,1); border: none; cursor: pointer; position: relative; overflow: hidden; }
+  .btn-primary::before { content: ''; position: absolute; top: 0; left: -100%; width: 100%; height: 100%; background: linear-gradient(90deg, transparent, rgba(255,255,255,0.15), transparent); transition: left 0.6s; }
+  .btn-primary:hover::before { left: 100%; }
+  .btn-primary:hover { background: var(--accent-dark); transform: translateY(-3px); box-shadow: 0 12px 35px rgba(196,80,42,0.35); }
+  .btn-primary svg { transition: transform 0.3s; }
+  .btn-primary:hover svg { transform: translateX(4px); }
+  .btn-secondary { display: inline-flex; align-items: center; gap: 10px; background: transparent; color: var(--charcoal); padding: 16px 36px; font-size: 14px; font-weight: 600; letter-spacing: 1px; text-transform: uppercase; text-decoration: none; border-radius: 4px; border: 2px solid var(--charcoal); transition: all 0.4s cubic-bezier(0.16,1,0.3,1); }
+  .btn-secondary:hover { background: var(--charcoal); color: var(--cream); transform: translateY(-3px); box-shadow: 0 12px 35px rgba(26,26,26,0.15); }
+  .hero-visual { position: absolute; right: 60px; top: 50%; transform: translateY(-50%); width: 500px; height: 600px; animation: heroImgIn 1.2s cubic-bezier(0.16,1,0.3,1) 0.4s both; }
+  @keyframes heroImgIn { from { opacity:0; transform:translateY(-50%) translateX(60px) scale(0.95); } to { opacity:1; transform:translateY(-50%) translateX(0) scale(1); } }
+  .hero-img-box { width: 100%; height: 100%; background: url('hero-image.png') center center / cover no-repeat; border-radius: 8px; position: relative; overflow: hidden; }
+  .hero-img-box::after { content: ''; position: absolute; inset: 0; border: 1px solid rgba(26,26,26,0.08); border-radius: 8px; }
+  .hero-stat { position: absolute; bottom: -30px; left: -40px; background: var(--white); padding: 24px 32px; border-radius: 8px; box-shadow: 0 20px 60px rgba(0,0,0,0.08); animation: statFloat 3s ease-in-out infinite; }
+  @keyframes statFloat { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-8px); } }
+  .hero-stat .number { font-family: 'DM Serif Display', serif; font-size: 42px; color: var(--accent); line-height: 1; }
+  .hero-stat .label { font-size: 13px; color: var(--warm-gray); text-transform: uppercase; letter-spacing: 1px; margin-top: 4px; }
+  @keyframes slideUp { from { opacity:0; transform:translateY(30px); } to { opacity:1; transform:translateY(0); } }
+
+  .section-divider { width: 60px; height: 3px; background: var(--accent); margin: 0 auto 20px; border-radius: 2px; }
+
+  /* TRUST */
+  .trust-bar { display: flex; justify-content: center; gap: 60px; padding: 48px 60px; border-top: 1px solid rgba(26,26,26,0.06); border-bottom: 1px solid rgba(26,26,26,0.06); }
+  .trust-item { display: flex; align-items: center; gap: 14px; font-size: 14px; color: var(--warm-gray); font-weight: 500; transition: all 0.3s; }
+  .trust-item:hover { color: var(--charcoal); transform: translateY(-2px); }
+  .trust-icon { width: 40px; height: 40px; background: var(--light-stone); border-radius: 50%; display: flex; align-items: center; justify-content: center; transition: all 0.4s; }
+  .trust-item:hover .trust-icon { background: var(--accent); }
+  .trust-item:hover .trust-icon svg { stroke: white; }
+
+  /* SERVICES */
+  .services { padding: 120px 60px; }
+  .section-header { text-align: center; margin-bottom: 80px; }
+  .section-tag { display: inline-block; font-size: 12px; font-weight: 600; letter-spacing: 3px; text-transform: uppercase; color: var(--accent); margin-bottom: 20px; }
+  .section-title { font-family: 'DM Serif Display', serif; font-size: clamp(36px,4vw,52px); letter-spacing: -1px; line-height: 1.1; }
+  .section-subtitle { font-size: 17px; color: var(--warm-gray); max-width: 560px; margin: 20px auto 0; line-height: 1.7; }
+  .services-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 24px; max-width: 1200px; margin: 0 auto; }
+  .service-card { background: var(--white); padding: 44px 36px; border-radius: 8px; border: 1px solid rgba(26,26,26,0.06); transition: all 0.5s cubic-bezier(0.16,1,0.3,1); position: relative; overflow: hidden; cursor: pointer; }
+  .service-card::before { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 3px; background: var(--accent); transform: scaleX(0); transform-origin: left; transition: transform 0.5s cubic-bezier(0.16,1,0.3,1); }
+  .service-card:hover { transform: translateY(-8px); box-shadow: 0 25px 60px rgba(0,0,0,0.08); }
+  .service-card:hover::before { transform: scaleX(1); }
+  .service-card-img { width: calc(100% + 72px); margin: -44px -36px 24px; height: 200px; object-fit: cover; border-radius: 8px 8px 0 0; transition: transform 0.6s cubic-bezier(0.16,1,0.3,1); }
+  .service-card:hover .service-card-img { transform: scale(1.05); }
+  .service-icon { width: 56px; height: 56px; background: var(--cream); border-radius: 12px; display: flex; align-items: center; justify-content: center; margin-bottom: 24px; transition: all 0.4s; }
+  .service-card:hover .service-icon { background: var(--accent); }
+  .service-card:hover .service-icon svg { color: white; }
+  .service-icon svg { width: 28px; height: 28px; color: var(--accent); transition: color 0.4s; }
+  .service-card h3 { font-family: 'DM Serif Display', serif; font-size: 22px; margin-bottom: 12px; letter-spacing: -0.3px; }
+  .service-card p { font-size: 14.5px; line-height: 1.7; color: var(--warm-gray); }
+  .service-card .service-list { margin-top: 18px; padding-top: 18px; border-top: 1px solid rgba(26,26,26,0.06); }
+  .service-card .service-list li { font-size: 13.5px; color: var(--warm-gray); padding: 5px 0; list-style: none; display: flex; align-items: center; gap: 8px; transition: all 0.3s; }
+  .service-card .service-list li::before { content: '\2192'; color: var(--accent); font-weight: 600; font-size: 12px; transition: transform 0.3s; }
+  .service-card:hover .service-list li::before { transform: translateX(4px); }
+
+  /* PROCESS */
+  .process { padding: 120px 60px; background: var(--charcoal); color: var(--cream); position: relative; overflow: hidden; }
+  .process::before { content: ''; position: absolute; top: -50%; right: -20%; width: 600px; height: 600px; background: radial-gradient(circle, rgba(184,150,62,0.06) 0%, transparent 70%); border-radius: 50%; animation: floatOrb 12s ease-in-out infinite; }
+  .process .section-tag { color: var(--gold); }
+  .process .section-subtitle { color: rgba(242,237,228,0.5); }
+  .process .section-divider { background: var(--gold); }
+  .process-steps { display: grid; grid-template-columns: repeat(4,1fr); gap: 40px; max-width: 1200px; margin: 0 auto; }
+  .step { position: relative; padding-top: 40px; }
+  .step::before { content: ''; position: absolute; top: 0; left: 0; width: 0; height: 1px; background: linear-gradient(90deg, var(--gold), transparent); transition: width 1s cubic-bezier(0.16,1,0.3,1); }
+  .step.visible::before { width: 100%; }
+  .step-number { font-family: 'DM Serif Display', serif; font-size: 48px; color: var(--gold); opacity: 0.3; line-height: 1; margin-bottom: 16px; transition: opacity 0.5s; }
+  .step:hover .step-number { opacity: 0.6; }
+  .step h3 { font-size: 18px; font-weight: 600; margin-bottom: 10px; letter-spacing: -0.3px; }
+  .step p { font-size: 14px; line-height: 1.7; color: rgba(242,237,228,0.5); }
+
+  /* PORTFOLIO */
+  .portfolio { padding: 120px 60px; }
+  .portfolio-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 20px; max-width: 1200px; margin: 0 auto; }
+  .portfolio-item { aspect-ratio: 4/3; background: var(--light-stone); border-radius: 8px; overflow: hidden; position: relative; cursor: pointer; display: flex; align-items: center; justify-content: center; }
+  .portfolio-item:first-child { grid-row: span 2; aspect-ratio: auto; }
+  .portfolio-item .overlay { position: absolute; inset: 0; background: linear-gradient(transparent 40%, rgba(26,26,26,0.85)); opacity: 0; transition: opacity 0.5s cubic-bezier(0.16,1,0.3,1); display: flex; align-items: flex-end; padding: 24px; }
+  .portfolio-item:hover .overlay { opacity: 1; }
+  .overlay-text { transform: translateY(10px); transition: transform 0.5s cubic-bezier(0.16,1,0.3,1); }
+  .portfolio-item:hover .overlay-text { transform: translateY(0); }
+  .overlay-text h4 { color: white; font-size: 16px; font-weight: 600; }
+  .overlay-text span { color: rgba(255,255,255,0.6); font-size: 13px; }
+  .placeholder-label { font-size: 12px; color: var(--warm-gray); text-transform: uppercase; letter-spacing: 2px; text-align: center; }
+
+  /* STATS */
+  .stats { display: grid; grid-template-columns: repeat(4,1fr); max-width: 1200px; margin: 0 auto; padding: 0 60px 120px; }
+  .stat-item { text-align: center; padding: 40px 20px; border-right: 1px solid rgba(26,26,26,0.08); transition: transform 0.4s; }
+  .stat-item:last-child { border-right: none; }
+  .stat-item:hover { transform: translateY(-4px); }
+  .stat-number { font-family: 'DM Serif Display', serif; font-size: 52px; color: var(--accent); line-height: 1; }
+  .stat-label { font-size: 14px; color: var(--warm-gray); text-transform: uppercase; letter-spacing: 1px; margin-top: 8px; }
+
+  /* TESTIMONIALS */
+  .testimonials { padding: 120px 60px; background: var(--light-stone); }
+  .testimonials-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 24px; max-width: 1200px; margin: 0 auto; }
+  .testimonial-card { background: var(--white); padding: 40px; border-radius: 8px; transition: all 0.4s cubic-bezier(0.16,1,0.3,1); border: 1px solid transparent; }
+  .testimonial-card:hover { transform: translateY(-6px); box-shadow: 0 20px 50px rgba(0,0,0,0.06); border-color: rgba(196,80,42,0.15); }
+  .testimonial-stars { color: var(--gold); font-size: 18px; margin-bottom: 20px; letter-spacing: 3px; }
+  .testimonial-text { font-size: 15px; line-height: 1.8; color: var(--charcoal); margin-bottom: 24px; font-style: italic; }
+  .testimonial-author { display: flex; align-items: center; gap: 14px; }
+  .author-avatar { width: 44px; height: 44px; border-radius: 50%; background: var(--cream); display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 14px; color: var(--accent); }
+  .author-info strong { display: block; font-size: 14px; }
+  .author-info span { font-size: 12px; color: var(--warm-gray); }
+
+  /* CTA */
+  .cta-section { padding: 120px 60px; text-align: center; position: relative; overflow: hidden; }
+  .cta-section::before { content: ''; position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%); width: 600px; height: 600px; background: radial-gradient(circle, rgba(196,80,42,0.05) 0%, transparent 70%); border-radius: 50%; animation: floatOrb 10s ease-in-out infinite; }
+  .cta-section h2 { font-family: 'DM Serif Display', serif; font-size: clamp(36px,5vw,56px); letter-spacing: -1px; margin-bottom: 20px; position: relative; }
+  .cta-section p { font-size: 18px; color: var(--warm-gray); margin-bottom: 40px; position: relative; }
+  .cta-contact { display: flex; justify-content: center; gap: 40px; margin-top: 48px; position: relative; }
+  .contact-method { display: flex; align-items: center; gap: 12px; font-size: 15px; color: var(--warm-gray); transition: all 0.3s; }
+  .contact-method:hover { color: var(--charcoal); transform: translateY(-2px); }
+  .contact-method strong { color: var(--charcoal); }
+
+  /* FOOTER */
+  footer { background: var(--charcoal); color: rgba(242,237,228,0.5); padding: 80px 60px 40px; }
+  .footer-top { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 60px; max-width: 1200px; margin: 0 auto; padding-bottom: 60px; border-bottom: 1px solid rgba(242,237,228,0.08); }
+  .footer-brand .logo-text { color: var(--cream); }
+  .footer-brand p { margin-top: 16px; font-size: 14px; line-height: 1.7; max-width: 300px; }
+  .footer-col h4 { color: var(--cream); font-size: 13px; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 24px; }
+  .footer-col ul { list-style: none; }
+  .footer-col li { margin-bottom: 12px; font-size: 14px; }
+  .footer-col a { color: rgba(242,237,228,0.5); text-decoration: none; transition: all 0.3s; }
+  .footer-col a:hover { color: var(--cream); padding-left: 6px; }
+  .footer-bottom { max-width: 1200px; margin: 0 auto; padding-top: 30px; display: flex; justify-content: space-between; font-size: 12px; }
+
+  /* BACK TO TOP */
+  .back-to-top { position: fixed; bottom: 30px; right: 30px; width: 48px; height: 48px; background: var(--accent); color: white; border: none; border-radius: 50%; cursor: pointer; display: flex; align-items: center; justify-content: center; opacity: 0; transform: translateY(20px); transition: all 0.4s cubic-bezier(0.16,1,0.3,1); z-index: 999; box-shadow: 0 4px 20px rgba(196,80,42,0.3); }
+  .back-to-top.show { opacity: 1; transform: translateY(0); }
+  .back-to-top:hover { background: var(--accent-dark); transform: translateY(-4px); box-shadow: 0 8px 30px rgba(196,80,42,0.4); }
+
+  /* RESPONSIVE */
+  @media (max-width: 1100px) {
+    .hero-visual { display: none; }
+    .services-grid, .testimonials-grid { grid-template-columns: repeat(2,1fr); }
+    .process-steps { grid-template-columns: repeat(2,1fr); }
+    .portfolio-grid { grid-template-columns: repeat(2,1fr); }
+    .portfolio-item:first-child { grid-row: auto; }
+    .footer-top { grid-template-columns: 1fr 1fr; }
+  }
+  @media (max-width: 768px) {
+    nav { padding: 16px 24px; }
+    nav.scrolled { padding: 12px 24px; }
+    .nav-links { display: none; position: absolute; top: 100%; left: 0; right: 0; background: var(--cream); flex-direction: column; padding: 24px; gap: 20px; box-shadow: 0 20px 40px rgba(0,0,0,0.08); border-bottom: 2px solid var(--accent); }
+    .nav-links.open { display: flex; }
+    .hamburger { display: block; }
+    .hero, .services, .process, .portfolio, .testimonials, .cta-section { padding: 80px 24px; }
+    .trust-bar { flex-wrap: wrap; gap: 24px; padding: 32px 24px; }
+    .services-grid, .testimonials-grid, .process-steps { grid-template-columns: 1fr; }
+    .portfolio-grid { grid-template-columns: 1fr; }
+    .stats { grid-template-columns: repeat(2,1fr); padding: 0 24px 80px; }
+    .stat-item:nth-child(2) { border-right: none; }
+    .hero-actions { flex-direction: column; }
+    .cta-contact { flex-direction: column; align-items: center; }
+    footer { padding: 60px 24px 30px; }
+    .footer-top { grid-template-columns: 1fr; gap: 40px; }
+    .footer-bottom { flex-direction: column; gap: 8px; text-align: center; }
+  }
+</style>
+</head>
+<body>
+
+<nav id="mainNav">
+  <a href="#top" class="logo" style="text-decoration:none;color:inherit;">
+    <div class="logo-icon"><svg viewBox="0 0 24 24" fill="none" stroke="#F2EDE4" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21h18"/><path d="M5 21V7l7-4 7 4v14"/><path d="M9 21v-6h6v6"/></svg></div>
+    <div class="logo-text">[Nom<span>Bâtiment</span>]</div>
+  </a>
+  <ul class="nav-links" id="navLinks">
+    <li><a href="#services">Services</a></li>
+    <li><a href="#process">Processus</a></li>
+    <li><a href="#realisations">Réalisations</a></li>
+    <li><a href="#avis">Avis</a></li>
+    <li><a href="#contact" class="nav-cta">Devis Gratuit</a></li>
+  </ul>
+  <button class="hamburger" id="hamburger" aria-label="Menu" onclick="document.getElementById('navLinks').classList.toggle('open');this.classList.toggle('active');"><span></span><span></span><span></span></button>
+</nav>
+
+<section class="hero" id="top">
+  <div class="hero-content">
+    <div class="hero-tag"><span class="dot"></span>Entreprise de Bâtiment à Genève</div>
+    <h1>L'excellence au service<br>de vos <em>espaces</em></h1>
+    <p>Plâtrerie, peinture, isolation et rénovation complète. Des professionnels qualifiés, des résultats irréprochables, dans tout le canton de Genève.</p>
+    <div class="hero-actions">
+      <a href="#contact" class="btn-primary">Demander un Devis <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a>
+      <a href="#realisations" class="btn-secondary">Nos Réalisations</a>
+    </div>
+  </div>
+  <div class="hero-visual">
+    <div class="hero-img-box"></div>
+    <div class="hero-stat"><div class="number">15+</div><div class="label">Ans d'expérience</div></div>
+  </div>
+</section>
+
+<div class="trust-bar">
+  <div class="trust-item reveal stagger-1"><div class="trust-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div>Entreprise certifiée &amp; assurée</div>
+  <div class="trust-item reveal stagger-2"><div class="trust-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg></div>Respect strict des délais</div>
+  <div class="trust-item reveal stagger-3"><div class="trust-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2"><path d="M22 11.08V12a10 10 0 11-5.93-9.14"/><path d="M22 4L12 14.01l-3-3"/></svg></div>Devis gratuit sous 48h</div>
+  <div class="trust-item reveal stagger-4"><div class="trust-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87"/><path d="M16 3.13a4 4 0 010 7.75"/></svg></div>Équipe qualifiée locale</div>
+</div>
+
+<section class="services" id="services">
+  <div class="section-header reveal"><span class="section-tag">Nos Prestations</span><div class="section-divider"></div><h2 class="section-title">Tous vos travaux de<br>second œuvre</h2><p class="section-subtitle">Du rafraîchissement à la rénovation complète, nous maîtrisons l'ensemble des corps de métier du bâtiment intérieur et extérieur.</p></div>
+  <div class="services-grid">
+    <div class="service-card reveal stagger-1"><img src="service-peinture.png" alt="Peinture" class="service-card-img"><h3>Peinture</h3><p>Peinture intérieure et extérieure pour appartements, villas, bureaux et immeubles.</p><ul class="service-list"><li>Peinture murale &amp; plafonds</li><li>Façades &amp; boiseries</li><li>Peinture décorative &amp; effets</li><li>Laquage &amp; vernissage</li></ul></div>
+    <div class="service-card reveal stagger-2"><img src="service-platrerie.png" alt="Plâtrerie" class="service-card-img"><h3>Plâtrerie &amp; Gypserie</h3><p>Pose de cloisons, faux-plafonds et travaux de plâtrerie pour vos aménagements.</p><ul class="service-list"><li>Cloisons sèches &amp; placo</li><li>Faux-plafonds suspendus</li><li>Doublage &amp; habillage</li><li>Enduits &amp; lissage</li></ul></div>
+    <div class="service-card reveal stagger-3"><img src="service-isolation.png" alt="Isolation" class="service-card-img"><h3>Isolation</h3><p>Solutions d'isolation thermique et acoustique pour un meilleur confort et des économies d'énergie.</p><ul class="service-list"><li>Isolation thermique intérieure</li><li>Isolation phonique / acoustique</li><li>Isolation de façades</li><li>Isolation des combles</li></ul></div>
+    <div class="service-card reveal stagger-1"><div class="service-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M21 16V8a2 2 0 00-1-1.73l-7-4a2 2 0 00-2 0l-7 4A2 2 0 003 8v8a2 2 0 001 1.73l7 4a2 2 0 002 0l7-4A2 2 0 0021 16z"/></svg></div><h3>Rénovation Complète</h3><p>Rénovation d'appartements, bureaux et locaux commerciaux de A à Z.</p><ul class="service-list"><li>Rénovation intérieure totale</li><li>Transformation d'espaces</li><li>Aménagement de combles</li><li>Rénovation salle de bains &amp; cuisine</li></ul></div>
+    <div class="service-card reveal stagger-2"><div class="service-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="1" y="6" width="22" height="12" rx="2"/><path d="M1 10h22"/></svg></div><h3>Papier Peint &amp; Revêtements</h3><p>Pose de papier peint, revêtements muraux décoratifs et tapisserie.</p><ul class="service-list"><li>Papier peint classique &amp; design</li><li>Revêtements muraux textiles</li><li>Toile de verre</li><li>Crépi décoratif</li></ul></div>
+    <div class="service-card reveal stagger-3"><div class="service-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z"/><line x1="4" y1="22" x2="4" y2="15"/></svg></div><h3>Façades &amp; Crépissage</h3><p>Ravalement, crépissage et entretien de façades pour valoriser votre bien immobilier.</p><ul class="service-list"><li>Ravalement de façade</li><li>Crépissage &amp; enduit extérieur</li><li>Nettoyage haute pression</li><li>Traitement hydrofuge</li></ul></div>
+  </div>
+</section>
+
+<section class="process" id="process">
+  <div class="section-header reveal"><span class="section-tag">Comment ça marche</span><div class="section-divider"></div><h2 class="section-title" style="color:var(--cream);">Un processus rigoureux<br>et transparent</h2><p class="section-subtitle">De votre premier appel à la réception des travaux, chaque étape est maîtrisée.</p></div>
+  <div class="process-steps">
+    <div class="step reveal stagger-1"><div class="step-number">01</div><h3>Contact &amp; Visite</h3><p>Prise de contact par téléphone ou formulaire. Visite sur place gratuite pour évaluer vos besoins.</p></div>
+    <div class="step reveal stagger-2"><div class="step-number">02</div><h3>Devis Détaillé</h3><p>Nous vous remettons un devis transparent et complet sous 48 heures, sans engagement.</p></div>
+    <div class="step reveal stagger-3"><div class="step-number">03</div><h3>Réalisation</h3><p>Notre équipe réalise les travaux avec rigueur, propreté et respect des délais convenus.</p></div>
+    <div class="step reveal stagger-4"><div class="step-number">04</div><h3>Réception &amp; Garantie</h3><p>Vérification finale avec vous. Garantie sur tous nos travaux et suivi après-vente.</p></div>
+  </div>
+</section>
+
+<section class="portfolio" id="realisations">
+  <div class="section-header reveal"><span class="section-tag">Réalisations</span><div class="section-divider"></div><h2 class="section-title">Nos derniers chantiers</h2><p class="section-subtitle">Découvrez quelques-uns de nos projets récents dans le canton de Genève.</p></div>
+  <div class="portfolio-grid">
+    <div class="portfolio-item reveal-scale stagger-1"><span class="placeholder-label">Photo<br>Chantier 1</span><div class="overlay"><div class="overlay-text"><h4>Rénovation appartement</h4><span>Genève centre — 120m²</span></div></div></div>
+    <div class="portfolio-item reveal-scale stagger-2"><span class="placeholder-label">Photo<br>Chantier 2</span><div class="overlay"><div class="overlay-text"><h4>Peinture &amp; isolation</h4><span>Carouge — Villa</span></div></div></div>
+    <div class="portfolio-item reveal-scale stagger-3"><span class="placeholder-label">Photo<br>Chantier 3</span><div class="overlay"><div class="overlay-text"><h4>Bureaux commerciaux</h4><span>Lancy — 250m²</span></div></div></div>
+    <div class="portfolio-item reveal-scale stagger-4"><span class="placeholder-label">Photo<br>Chantier 4</span><div class="overlay"><div class="overlay-text"><h4>Façade &amp; crépissage</h4><span>Meyrin — Immeuble</span></div></div></div>
+    <div class="portfolio-item reveal-scale stagger-5"><span class="placeholder-label">Photo<br>Chantier 5</span><div class="overlay"><div class="overlay-text"><h4>Salle de bains complète</h4><span>Vernier — Appartement</span></div></div></div>
+  </div>
+</section>
+
+<div class="stats">
+  <div class="stat-item reveal stagger-1"><div class="stat-number" data-target="15">0</div><div class="stat-label">Ans d'expérience</div></div>
+  <div class="stat-item reveal stagger-2"><div class="stat-number" data-target="500">0</div><div class="stat-label">Projets réalisés</div></div>
+  <div class="stat-item reveal stagger-3"><div class="stat-number" data-target="100">0</div><div class="stat-label">Clients satisfaits</div></div>
+  <div class="stat-item reveal stagger-4"><div class="stat-number" data-target="48">0</div><div class="stat-label">Heures pour un devis</div></div>
+</div>
+
+<section class="testimonials" id="avis">
+  <div class="section-header reveal"><span class="section-tag">Témoignages</span><div class="section-divider"></div><h2 class="section-title">La confiance de nos clients</h2></div>
+  <div class="testimonials-grid">
+    <div class="testimonial-card reveal stagger-1"><div class="testimonial-stars">★★★★★</div><p class="testimonial-text">« Travail soigné, équipe professionnelle et ponctuelle. La rénovation de notre appartement à Plainpalais a été réalisée dans les délais et avec une finition impeccable. »</p><div class="testimonial-author"><div class="author-avatar">ML</div><div class="author-info"><strong>Marie L.</strong><span>Rénovation appartement — Plainpalais</span></div></div></div>
+    <div class="testimonial-card reveal stagger-2"><div class="testimonial-stars">★★★★★</div><p class="testimonial-text">« Devis clair et respecté à la lettre. L'isolation de notre villa nous a permis de réduire significativement notre facture énergétique. Professionnalisme remarquable. »</p><div class="testimonial-author"><div class="author-avatar">PD</div><div class="author-info"><strong>Philippe D.</strong><span>Isolation thermique — Cologny</span></div></div></div>
+    <div class="testimonial-card reveal stagger-3"><div class="testimonial-stars">★★★★★</div><p class="testimonial-text">« Réactivité exemplaire pour les travaux de peinture de nos bureaux. Tout a été réalisé le week-end pour ne pas perturber notre activité. Je recommande vivement. »</p><div class="testimonial-author"><div class="author-avatar">SB</div><div class="author-info"><strong>Sophie B.</strong><span>Peinture bureaux — Acacias</span></div></div></div>
+  </div>
+</section>
+
+<section class="cta-section" id="contact">
+  <div class="reveal"><div class="section-tag">Contactez-nous</div><div class="section-divider"></div><h2>Vous avez un projet ?<br>Parlons-en.</h2><p>Devis gratuit et sans engagement. Nous intervenons dans tout le canton de Genève.</p>
+  <a href="mailto:contact@example.ch?subject=Demande%20de%20Devis&body=Bonjour%2C%0A%0AJe%20souhaite%20obtenir%20un%20devis%20pour%20%3A%0A%0A" class="btn-primary">Demander un Devis Gratuit <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a>
+  <div class="cta-contact">
+    <div class="contact-method"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6 19.79 19.79 0 01-3.07-8.67A2 2 0 014.11 2h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/></svg><a href="tel:+41XXXXXXXX" style="text-decoration:none;color:inherit;"><strong>+41 XX XXX XX XX</strong></a></div>
+    <div class="contact-method"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg><a href="mailto:contact@example.ch" style="text-decoration:none;color:inherit;"><strong>contact@[domaine].ch</strong></a></div>
+    <div class="contact-method"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg><a href="https://maps.google.com/?q=Gen%C3%A8ve+Suisse" target="_blank" rel="noopener" style="text-decoration:none;color:inherit;"><strong>Genève, Suisse</strong></a></div>
+  </div></div>
+</section>
+
+<footer>
+  <div class="footer-top">
+    <div class="footer-brand"><div class="logo-text">[Nom<span style="color:var(--accent)">Bâtiment</span>]</div><p>Votre partenaire de confiance pour tous vos travaux de bâtiment dans le canton de Genève. Qualité, ponctualité et transparence depuis [année].</p></div>
+    <div class="footer-col"><h4>Services</h4><ul><li><a href="#services">Peinture</a></li><li><a href="#services">Plâtrerie</a></li><li><a href="#services">Isolation</a></li><li><a href="#services">Rénovation</a></li><li><a href="#services">Papier peint</a></li><li><a href="#services">Façades</a></li></ul></div>
+    <div class="footer-col"><h4>Entreprise</h4><ul><li><a href="#top">À propos</a></li><li><a href="#realisations">Réalisations</a></li><li><a href="#avis">Témoignages</a></li><li><a href="#contact">Contact</a></li></ul></div>
+    <div class="footer-col"><h4>Contact</h4><ul><li><a href="tel:+41XXXXXXXX" style="color:inherit;text-decoration:none;">+41 XX XXX XX XX</a></li><li><a href="mailto:contact@example.ch" style="color:inherit;text-decoration:none;">contact@[domaine].ch</a></li><li>Genève, Suisse</li><li style="margin-top:16px;"><a href="https://maps.google.com/?q=Gen%C3%A8ve+Suisse" target="_blank" rel="noopener">Google Maps →</a></li></ul></div>
+  </div>
+  <div class="footer-bottom"><span>© 2026 [NomBâtiment] — Tous droits réservés</span><span>Conception: <a href="#" style="color:var(--accent)">TESO</a></span></div>
+</footer>
+
+<button class="back-to-top" id="backToTop" onclick="window.scrollTo({top:0})"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M12 19V5M5 12l7-7 7 7"/></svg></button>
+
+<script>
+var revealEls=document.querySelectorAll('.reveal,.reveal-scale');
+var revObs=new IntersectionObserver(function(e){e.forEach(function(en){if(en.isIntersecting)en.target.classList.add('visible');});},{threshold:0.1,rootMargin:'0px 0px -40px 0px'});
+revealEls.forEach(function(el){revObs.observe(el);});
+
+var nav=document.getElementById('mainNav'),btt=document.getElementById('backToTop');
+window.addEventListener('scroll',function(){
+  if(window.scrollY>60){nav.classList.add('scrolled');btt.classList.add('show');}
+  else{nav.classList.remove('scrolled');btt.classList.remove('show');}
+});
+
+document.querySelectorAll('#navLinks a').forEach(function(l){l.addEventListener('click',function(){document.getElementById('navLinks').classList.remove('open');document.getElementById('hamburger').classList.remove('active');});});
+
+var counterStarted=false;
+function animateCounters(){document.querySelectorAll('.stat-number[data-target]').forEach(function(el){
+  var t=parseInt(el.getAttribute('data-target'));
+  var s=t===15?'+':t===500?'+':t===100?'%':'h';
+  var st=null;
+  function step(ts){if(!st)st=ts;var p=Math.min((ts-st)/2000,1);var ez=1-Math.pow(1-p,3);el.textContent=Math.floor(ez*t)+s;if(p<1)requestAnimationFrame(step);}
+  requestAnimationFrame(step);
+});}
+var stObs=new IntersectionObserver(function(e){if(e[0].isIntersecting&&!counterStarted){counterStarted=true;animateCounters();}},{threshold:0.3});
+stObs.observe(document.querySelector('.stats'));
+
+var steps=document.querySelectorAll('.step');
+var spObs=new IntersectionObserver(function(e){e.forEach(function(en){if(en.isIntersecting)en.target.classList.add('visible');});},{threshold:0.3});
+steps.forEach(function(s){spObs.observe(s);});
+</script>
+</body>
+</html>

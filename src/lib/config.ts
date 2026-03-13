@@ -7,7 +7,7 @@ export const siteConfig = {
   // TODO: Remplacer ces valeurs par les vraies données du client
   name: "[NomBâtiment]",
   nameParts: { prefix: "[Nom", accent: "Bâtiment", suffix: "]" },
-  siteUrl: "https://batiment-geneve.ch", // TODO: Remplacer par le vrai domaine
+  siteUrl: "https://batiment-geneve.vercel.app",
   tagline: "Entreprise de Bâtiment à Genève",
   description:
     "Votre partenaire de confiance pour tous vos travaux de bâtiment dans le canton de Genève. Qualité, ponctualité et transparence depuis plus de 15 ans.",
