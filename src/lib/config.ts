@@ -4,18 +4,22 @@
 
 // ─── Company Info ──────────────────────────────────────────
 export const siteConfig = {
+  // TODO: Remplacer ces valeurs par les vraies données du client
   name: "[NomBâtiment]",
   nameParts: { prefix: "[Nom", accent: "Bâtiment", suffix: "]" },
+  siteUrl: "https://batiment-geneve.ch", // TODO: Remplacer par le vrai domaine
   tagline: "Entreprise de Bâtiment à Genève",
   description:
-    "Votre partenaire de confiance pour tous vos travaux de bâtiment dans le canton de Genève. Qualité, ponctualité et transparence depuis [année].",
+    "Votre partenaire de confiance pour tous vos travaux de bâtiment dans le canton de Genève. Qualité, ponctualité et transparence depuis plus de 15 ans.",
   phone: "+41 76 394 42 18",
   phoneHref: "tel:+41763944218",
-  email: "contact@example.ch",
-  emailDisplay: "contact@[domaine].ch",
+  email: "contact@example.ch", // TODO: Remplacer par le vrai email
+  emailDisplay: "contact@[domaine].ch", // TODO: Remplacer
   address: "Genève, Suisse",
+  addressStreet: "Genève", // TODO: Ajouter adresse complète
+  postalCode: "1200", // TODO: Vérifier
   mapsUrl: "https://maps.google.com/?q=Gen%C3%A8ve+Suisse",
-  foundedYear: "[année]",
+  foundedYear: "2011", // TODO: Confirmer
   copyright: "© 2026 [NomBâtiment] — Tous droits réservés",
   designCredit: "TESO",
 };

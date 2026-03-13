@@ -86,7 +86,7 @@ export default function Hero() {
         <div className="hero-img-overlay w-full h-full rounded-lg overflow-hidden">
           <img
             src={heroConfig.image}
-            alt="Bâtiment Genève"
+            alt="Rénovation et travaux de bâtiment à Genève — plâtrerie, peinture et finitions professionnelles"
             className="w-full h-full object-cover"
           />
         </div>
