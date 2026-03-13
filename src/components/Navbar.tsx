@@ -34,11 +34,7 @@ export default function Navbar() {
         {/* Logo */}
         <a href="#top" className="flex items-baseline gap-2 no-underline text-slate shrink-0">
           <span className="font-serif text-[22px] md:text-[28px] tracking-[-0.5px]">
-            ISO<b className="text-red font-normal">SWISS</b>BAT
-          </span>
-          <span className="w-px h-5 bg-slate/[0.12] self-center mx-1 hidden sm:block" />
-          <span className="text-[10px] font-bold tracking-[2.5px] uppercase text-steel hidden sm:block">
-            {site.tagline}
+            {site.name}
           </span>
         </a>
 
