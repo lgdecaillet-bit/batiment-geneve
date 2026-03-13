@@ -1,12 +1,13 @@
+import Topbar from "@/components/Topbar";
 import Navbar from "@/components/Navbar";
 import Hero from "@/components/Hero";
-import TrustBar from "@/components/TrustBar";
 import Services from "@/components/Services";
 import Process from "@/components/Process";
+import About from "@/components/About";
 import Portfolio from "@/components/Portfolio";
-import Stats from "@/components/Stats";
 import Testimonials from "@/components/Testimonials";
-import CTA from "@/components/CTA";
+import CTABand from "@/components/CTABand";
+import ContactBar from "@/components/ContactBar";
 import Footer from "@/components/Footer";
 import BackToTop from "@/components/BackToTop";
 import WhatsAppButton from "@/components/WhatsAppButton";
@@ -14,15 +15,16 @@ import WhatsAppButton from "@/components/WhatsAppButton";
 export default function Home() {
   return (
     <>
+      <Topbar />
       <Navbar />
       <Hero />
-      <TrustBar />
       <Services />
       <Process />
+      <About />
       <Portfolio />
-      <Stats />
       <Testimonials />
-      <CTA />
+      <CTABand />
+      <ContactBar />
       <Footer />
       <BackToTop />
       <WhatsAppButton />

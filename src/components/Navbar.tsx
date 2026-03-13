@@ -1,114 +1,114 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { siteConfig, navLinks } from "@/lib/config";
+import { site, navLinks } from "@/lib/config";
 
 export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
-  const [mobileOpen, setMobileOpen] = useState(false);
+  const [open, setOpen] = useState(false);
 
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 60);
-    window.addEventListener("scroll", onScroll);
-    return () => window.removeEventListener("scroll", onScroll);
+    const fn = () => setScrolled(window.scrollY > 10);
+    window.addEventListener("scroll", fn);
+    return () => window.removeEventListener("scroll", fn);
   }, []);
 
-  const closeMobile = () => {
-    setMobileOpen(false);
-  };
+  // Close menu on resize to desktop
+  useEffect(() => {
+    const fn = () => { if (window.innerWidth >= 768) setOpen(false); };
+    window.addEventListener("resize", fn);
+    return () => window.removeEventListener("resize", fn);
+  }, []);
+
+  const whatsappUrl = `https://wa.me/${site.whatsapp}?text=${encodeURIComponent("Bonjour, je souhaite obtenir un devis.")}`;
 
   return (
     <nav
       id="mainNav"
-      className={`fixed top-0 left-0 right-0 z-[1000] flex justify-between items-center backdrop-blur-[20px] border-b border-charcoal/[0.06] transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] ${
-        scrolled
-          ? "py-3 px-6 md:px-[60px] shadow-[0_4px_30px_rgba(0,0,0,0.06)] bg-cream/[0.97]"
-          : "py-4 md:py-5 px-6 md:px-[60px] bg-cream/[0.92]"
+      className={`sticky top-0 z-[100] bg-off-white border-b border-slate/[0.08] px-5 md:px-[60px] transition-shadow duration-400 ${
+        scrolled ? "shadow-[0_2px_24px_rgba(0,0,0,0.06)]" : ""
       }`}
     >
-      {/* Logo */}
-      <a
-        href="#top"
-        className="flex items-center gap-3.5 no-underline text-inherit group"
-      >
-        <div className="w-[42px] h-[42px] bg-charcoal flex items-center justify-center rounded-md transition-transform duration-300 group-hover:-rotate-6 group-hover:scale-105">
-          <svg
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="#F2EDE4"
-            strokeWidth="2"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            className="w-6 h-6"
-          >
-            <path d="M3 21h18" />
-            <path d="M5 21V7l7-4 7 4v14" />
-            <path d="M9 21v-6h6v6" />
-          </svg>
-        </div>
-        <div className="font-serif text-[22px] tracking-[-0.5px]">
-          {siteConfig.nameParts.prefix}
-          <span className="text-accent">{siteConfig.nameParts.accent}</span>
-          {siteConfig.nameParts.suffix}
-        </div>
-      </a>
+      {/* Top bar — logo + hamburger */}
+      <div className="flex justify-between items-center h-16 md:h-[72px]">
+        {/* Logo */}
+        <a href="#top" className="flex items-baseline gap-2 no-underline text-slate shrink-0">
+          <span className="font-serif text-[22px] md:text-[28px] tracking-[-0.5px]">
+            ISO<b className="text-red font-normal">SWISS</b>BAT
+          </span>
+          <span className="w-px h-5 bg-slate/[0.12] self-center mx-1 hidden sm:block" />
+          <span className="text-[10px] font-bold tracking-[2.5px] uppercase text-steel hidden sm:block">
+            {site.tagline}
+          </span>
+        </a>
 
-      {/* Nav Links */}
-      <ul
-        className={`list-none flex gap-9 ${
-          mobileOpen
-            ? "flex flex-col absolute top-full left-0 right-0 bg-cream p-6 gap-5 shadow-[0_20px_40px_rgba(0,0,0,0.08)] border-b-2 border-accent md:flex md:flex-row md:static md:p-0 md:shadow-none md:border-0"
-            : "hidden md:flex"
-        }`}
-      >
-        {navLinks.map((link) => (
-          <li key={link.href}>
+        {/* Desktop links */}
+        <ul className="hidden md:flex list-none gap-2 items-center h-full">
+          {navLinks.map((l) => (
+            <li key={l.href} className="h-full flex items-center">
+              <a
+                href={l.href}
+                className="nav-link-ul no-underline text-dark-steel text-[13px] font-semibold px-4 h-full flex items-center transition-colors duration-250 hover:text-slate"
+              >
+                {l.label}
+              </a>
+            </li>
+          ))}
+          <li className="pl-4 border-l border-slate/[0.08] ml-2 h-full flex items-center">
             <a
-              href={link.href}
-              onClick={closeMobile}
-              className="nav-link no-underline text-charcoal text-sm font-medium tracking-[0.5px] uppercase transition-colors duration-300 hover:text-accent"
+              href={whatsappUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="bg-red text-white px-6 py-2.5 rounded-md text-[13px] font-bold no-underline transition-all duration-300 tracking-[.3px] hover:bg-red-hover hover:-translate-y-px hover:shadow-[0_6px_20px_rgba(185,28,28,0.25)]"
             >
-              {link.label}
+              Devis Gratuit
             </a>
           </li>
-        ))}
-        <li>
-          <a
-            href={`https://wa.me/41763944218?text=${encodeURIComponent("Bonjour, je suis intéressé(e) par vos services. Pourriez-vous me donner plus d'informations ?")}`}
-            target="_blank"
-            rel="noopener noreferrer"
-            onClick={closeMobile}
-            className="nav-link nav-cta-btn no-underline"
-          >
-            Devis Gratuit
-          </a>
-        </li>
-      </ul>
+        </ul>
 
-      {/* Hamburger */}
-      <button
-        className="flex md:hidden flex-col gap-[5px] bg-transparent border-none cursor-pointer p-2 z-[1001]"
-        onClick={() => setMobileOpen(!mobileOpen)}
-        aria-label="Menu"
+        {/* Hamburger */}
+        <button
+          className="flex md:hidden flex-col gap-[5px] bg-transparent border-none cursor-pointer p-2"
+          onClick={() => setOpen(!open)}
+          aria-label="Menu"
+        >
+          <span className={`block w-5 h-0.5 bg-slate transition-all duration-300 origin-center ${open ? "rotate-45 translate-y-[7px]" : ""}`} />
+          <span className={`block w-5 h-0.5 bg-slate transition-all duration-300 ${open ? "opacity-0" : ""}`} />
+          <span className={`block w-5 h-0.5 bg-slate transition-all duration-300 origin-center ${open ? "-rotate-45 -translate-y-[7px]" : ""}`} />
+        </button>
+      </div>
+
+      {/* Mobile menu */}
+      <div
+        className={`md:hidden overflow-hidden transition-all duration-300 ease-in-out ${
+          open ? "max-h-[400px] pb-5" : "max-h-0"
+        }`}
       >
-        <span
-          className={`block w-6 h-0.5 bg-charcoal transition-all duration-400 ease-[cubic-bezier(0.16,1,0.3,1)] ${
-            mobileOpen ? "rotate-45 translate-x-[5px] translate-y-[5px]" : ""
-          }`}
-        />
-        <span
-          className={`block w-6 h-0.5 bg-charcoal transition-all duration-400 ease-[cubic-bezier(0.16,1,0.3,1)] ${
-            mobileOpen ? "opacity-0" : ""
-          }`}
-        />
-        <span
-          className={`block w-6 h-0.5 bg-charcoal transition-all duration-400 ease-[cubic-bezier(0.16,1,0.3,1)] ${
-            mobileOpen
-              ? "-rotate-45 translate-x-[5px] -translate-y-[5px]"
-              : ""
-          }`}
-        />
-      </button>
+        <ul className="list-none flex flex-col gap-1 border-t border-slate/[0.08] pt-3">
+          {navLinks.map((l) => (
+            <li key={l.href}>
+              <a
+                href={l.href}
+                onClick={() => setOpen(false)}
+                className="block no-underline text-dark-steel text-[15px] font-semibold py-3 px-2 rounded-md transition-colors duration-200 hover:bg-concrete hover:text-slate"
+              >
+                {l.label}
+              </a>
+            </li>
+          ))}
+          <li className="mt-2">
+            <a
+              href={whatsappUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              onClick={() => setOpen(false)}
+              className="block bg-red text-white text-center py-3 rounded-md text-[14px] font-bold no-underline transition-all duration-300 hover:bg-red-hover"
+            >
+              Devis Gratuit
+            </a>
+          </li>
+        </ul>
+      </div>
     </nav>
   );
 }

@@ -1,104 +1,104 @@
 "use client";
 
-import { motion } from "framer-motion";
-import { ArrowRight } from "lucide-react";
-import { heroConfig } from "@/lib/config";
-import { ease } from "@/lib/animations";
+import { useEffect, useRef, useState } from "react";
+import { Phone } from "lucide-react";
+import { site, heroData, heroStats } from "@/lib/config";
+
+function Counter({ target, suffix, inView }: { target: number; suffix: string; inView: boolean }) {
+  const [val, setVal] = useState(0);
+  const started = useRef(false);
+  useEffect(() => {
+    if (!inView || started.current) return;
+    started.current = true;
+    let st: number | null = null;
+    function step(ts: number) {
+      if (!st) st = ts;
+      const p = Math.min((ts - st) / 1800, 1);
+      setVal(Math.floor((1 - Math.pow(1 - p, 3)) * target));
+      if (p < 1) requestAnimationFrame(step);
+    }
+    requestAnimationFrame(step);
+  }, [inView, target]);
+  return <>{val}{suffix}</>;
+}
 
 export default function Hero() {
+  const stripRef = useRef<HTMLDivElement>(null);
+  const [stripInView, setStripInView] = useState(false);
+
+  useEffect(() => {
+    const el = stripRef.current;
+    if (!el) return;
+    const obs = new IntersectionObserver(([e]) => { if (e.isIntersecting) setStripInView(true); }, { threshold: 0.5 });
+    obs.observe(el);
+    return () => obs.disconnect();
+  }, []);
+
+  const whatsappUrl = `https://wa.me/${site.whatsapp}?text=${encodeURIComponent("Bonjour, je souhaite obtenir un devis.")}`;
+
   return (
-    <section
-      id="top"
-      className="orb-accent min-h-screen flex items-center px-6 md:px-[60px] pt-[140px] pb-20 relative"
-    >
-      <div className="max-w-[680px] relative z-[2]">
-        {/* Tag */}
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, ease }}
-          className="inline-flex items-center gap-2.5 bg-charcoal text-cream px-[18px] py-2 rounded-full text-xs font-semibold tracking-[2px] uppercase mb-8"
-        >
-          <span className="w-1.5 h-1.5 bg-accent rounded-full animate-[pulse_2s_ease-in-out_infinite]" />
-          {heroConfig.tag}
-        </motion.div>
+    <section id="top" aria-label="Plâtrerie, peinture et rénovation à Genève" className="relative min-h-[100svh] md:h-[85vh] md:min-h-[560px] md:max-h-[800px] overflow-hidden flex items-end">
+      {/* BG */}
+      <div
+        className="absolute inset-0 bg-cover bg-[center_30%]"
+        role="img"
+        aria-label="Chantier de rénovation à Genève"
+        style={{ backgroundImage: `url(${heroData.image})` }}
+      />
+      <div className="absolute inset-0 bg-gradient-to-t from-slate/[0.92] via-slate/40 to-slate/[0.15]" />
 
-        {/* Title */}
-        <motion.h1
-          initial={{ opacity: 0, y: 30 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, ease, delay: 0.1 }}
-          className="font-serif text-[clamp(48px,6vw,80px)] leading-[1.05] tracking-[-2px] mb-7"
-        >
-          {heroConfig.titleLine1}
-          <br />
-          {heroConfig.titleLine2}{" "}
-          <motion.em
-            initial={{ opacity: 0, y: 20, rotate: -2 }}
-            animate={{ opacity: 1, y: 0, rotate: 0 }}
-            transition={{ duration: 1.2, ease, delay: 0.5 }}
-            className="italic text-accent"
-          >
-            {heroConfig.titleAccent}
-          </motion.em>
-        </motion.h1>
-
-        {/* Description */}
-        <motion.p
-          initial={{ opacity: 0, y: 30 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, ease, delay: 0.2 }}
-          className="text-lg leading-[1.7] text-warm-gray max-w-[520px] mb-11"
-        >
-          {heroConfig.description}
-        </motion.p>
-
-        {/* Actions */}
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, ease, delay: 0.3 }}
-          className="flex gap-4 flex-col md:flex-row"
-        >
+      {/* Content */}
+      <div className="relative z-[2] px-5 md:px-[60px] pb-40 md:pb-36 w-full max-w-[760px]">
+        <div className="inline-flex items-center gap-2 bg-red text-white px-4 py-1.5 rounded text-[11px] font-extrabold tracking-[2px] uppercase mb-6">
+          {heroData.label}
+        </div>
+        <h1 className="font-serif text-[32px] md:text-[clamp(40px,5.5vw,68px)] leading-[1.12] text-white mb-4 font-normal">
+          {heroData.titleStart}<br />{heroData.titleEnd}{" "}
+          <i className="italic text-white/55">{heroData.titleItalic}</i>
+        </h1>
+        <p className="text-[15px] md:text-[17px] leading-[1.7] text-white/60 max-w-[520px] mb-6 md:mb-8">
+          {heroData.description}
+        </p>
+        <div className="flex gap-3 flex-col md:flex-row flex-wrap">
           <a
-            href="#contact"
-            className="btn-shine inline-flex items-center gap-2.5 bg-accent text-white px-9 py-4 text-sm font-semibold tracking-[1px] uppercase no-underline rounded transition-all duration-400 ease-[cubic-bezier(0.16,1,0.3,1)] hover:bg-accent-dark hover:-translate-y-[3px] hover:shadow-[0_12px_35px_rgba(196,80,42,0.35)] group"
+            href={site.phoneHref}
+            className="inline-flex items-center gap-2 bg-white text-slate px-7 py-3.5 rounded-md text-sm font-bold no-underline transition-all duration-300 tracking-[.2px] hover:-translate-y-0.5 hover:shadow-[0_8px_24px_rgba(0,0,0,0.15)]"
           >
-            {heroConfig.ctaPrimary}
-            <ArrowRight className="w-4 h-4 transition-transform duration-300 group-hover:translate-x-1" />
+            <Phone className="w-4 h-4 text-red" />
+            {site.phone}
           </a>
           <a
-            href="#realisations"
-            className="inline-flex items-center gap-2.5 bg-transparent text-charcoal px-9 py-4 text-sm font-semibold tracking-[1px] uppercase no-underline rounded border-2 border-charcoal transition-all duration-400 ease-[cubic-bezier(0.16,1,0.3,1)] hover:bg-charcoal hover:text-cream hover:-translate-y-[3px] hover:shadow-[0_12px_35px_rgba(26,26,26,0.15)]"
+            href={whatsappUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center gap-2 border-[1.5px] border-white/25 text-white px-7 py-3.5 rounded-md text-sm font-bold no-underline transition-all duration-300 hover:border-white hover:bg-white/[0.08] hover:-translate-y-0.5"
           >
-            {heroConfig.ctaSecondary}
+            Demander un Devis →
           </a>
-        </motion.div>
+        </div>
       </div>
 
-      {/* Hero Visual */}
-      <motion.div
-        initial={{ opacity: 0, x: 60, scale: 0.95 }}
-        animate={{ opacity: 1, x: 0, scale: 1 }}
-        transition={{ duration: 1.2, ease, delay: 0.4 }}
-        className="hidden lg:block absolute right-[60px] top-[140px] w-[500px] h-[600px]"
+      {/* Stats Strip */}
+      <div
+        ref={stripRef}
+        className="absolute bottom-0 left-0 right-0 z-[3] bg-off-white grid grid-cols-2 lg:grid-cols-4 border-t-[3px] border-red"
       >
-        <div className="hero-img-overlay w-full h-full rounded-lg overflow-hidden">
-          <img
-            src={heroConfig.image}
-            alt="Rénovation et travaux de bâtiment à Genève — plâtrerie, peinture et finitions professionnelles"
-            className="w-full h-full object-cover"
-          />
-        </div>
-        <div className="absolute -bottom-[30px] -left-10 bg-off-white px-8 py-6 rounded-lg shadow-[0_20px_60px_rgba(0,0,0,0.08)] animate-[statFloat_3s_ease-in-out_infinite]">
-          <div className="font-serif text-[42px] text-accent leading-none">
-            {heroConfig.statNumber}
+        {heroStats.map((s, i) => (
+          <div
+            key={s.label}
+            className={`py-4 px-4 md:py-6 md:px-8 text-center transition-colors duration-300 hover:bg-concrete ${
+              i < heroStats.length - 1 ? "border-r border-slate/[0.08]" : ""
+            } ${i === 1 ? "max-lg:border-r-0" : ""}`}
+          >
+            <div className="font-serif text-2xl md:text-4xl text-red leading-none">
+              <Counter target={s.target} suffix={s.suffix} inView={stripInView} />
+            </div>
+            <div className="text-[10px] md:text-xs text-steel uppercase tracking-[1px] mt-1 font-semibold">
+              {s.label}
+            </div>
           </div>
-          <div className="text-[13px] text-warm-gray uppercase tracking-[1px] mt-1">
-            {heroConfig.statLabel}
-          </div>
-        </div>
-      </motion.div>
+        ))}
+      </div>
     </section>
   );
 }

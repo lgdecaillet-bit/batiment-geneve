@@ -1,33 +1,28 @@
-import { siteConfig, services, testimonials } from "@/lib/config";
+import { site, services, testimonials } from "@/lib/config";
 
 export default function SchemaMarkup() {
-  const localBusiness = {
+  const business = {
     "@context": "https://schema.org",
     "@type": "HomeAndConstructionBusiness",
-    name: siteConfig.name,
-    description: siteConfig.description,
-    url: siteConfig.siteUrl,
-    telephone: siteConfig.phone,
-    email: siteConfig.email,
+    name: site.name,
+    description: site.description,
+    url: site.siteUrl,
+    telephone: site.phone,
+    email: site.email,
     address: {
       "@type": "PostalAddress",
-      streetAddress: siteConfig.addressStreet,
       addressLocality: "Genève",
-      postalCode: siteConfig.postalCode,
+      postalCode: site.postalCode,
       addressRegion: "GE",
       addressCountry: "CH",
     },
-    geo: {
-      "@type": "GeoCoordinates",
-      latitude: 46.2044,
-      longitude: 6.1432,
-    },
-    image: `${siteConfig.siteUrl}/images/hero-image.png`,
+    geo: { "@type": "GeoCoordinates", latitude: 46.2044, longitude: 6.1432 },
+    image: `${site.siteUrl}/images/hero-image.png`,
     priceRange: "$$",
     openingHoursSpecification: {
       "@type": "OpeningHoursSpecification",
       dayOfWeek: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
-      opens: "07:00",
+      opens: "07:30",
       closes: "18:00",
     },
     areaServed: {
@@ -39,24 +34,16 @@ export default function SchemaMarkup() {
       ratingValue: "5",
       reviewCount: String(testimonials.length),
       bestRating: "5",
-      worstRating: "1",
     },
     review: testimonials.map((t) => ({
       "@type": "Review",
-      reviewRating: {
-        "@type": "Rating",
-        ratingValue: "5",
-        bestRating: "5",
-      },
-      author: {
-        "@type": "Person",
-        name: t.author,
-      },
+      reviewRating: { "@type": "Rating", ratingValue: "5", bestRating: "5" },
+      author: { "@type": "Person", name: t.author },
       reviewBody: t.text,
     })),
     hasOfferCatalog: {
       "@type": "OfferCatalog",
-      name: "Services de bâtiment",
+      name: "Services",
       itemListElement: services.map((s, i) => ({
         "@type": "OfferCatalog",
         name: s.title,
@@ -69,17 +56,18 @@ export default function SchemaMarkup() {
   const serviceSchemas = services.map((s) => ({
     "@context": "https://schema.org",
     "@type": "Service",
-    name: s.title,
-    description: s.description,
+    serviceType: s.title,
     provider: {
       "@type": "HomeAndConstructionBusiness",
-      name: siteConfig.name,
+      name: site.name,
+      telephone: site.phone,
+      url: site.siteUrl,
     },
     areaServed: {
       "@type": "State",
       name: "Canton de Genève",
     },
-    ...(s.image && { image: `${siteConfig.siteUrl}${s.image}` }),
+    description: s.description,
   }));
 
   const breadcrumb = {
@@ -90,7 +78,46 @@ export default function SchemaMarkup() {
         "@type": "ListItem",
         position: 1,
         name: "Accueil",
-        item: siteConfig.siteUrl,
+        item: site.siteUrl,
+      },
+    ],
+  };
+
+  const faq = {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    mainEntity: [
+      {
+        "@type": "Question",
+        name: "Quels services proposez-vous à Genève ?",
+        acceptedAnswer: {
+          "@type": "Answer",
+          text: "Nous proposons des services de plâtrerie, peinture, gypserie, isolation thermique et acoustique, rénovation complète, papier peint et revêtements, ainsi que le ravalement et crépissage de façades dans tout le canton de Genève.",
+        },
+      },
+      {
+        "@type": "Question",
+        name: "Combien coûte un devis ?",
+        acceptedAnswer: {
+          "@type": "Answer",
+          text: "Le devis est entièrement gratuit et sans engagement. Nous nous déplaçons sur place et vous recevez un devis détaillé sous 48 heures.",
+        },
+      },
+      {
+        "@type": "Question",
+        name: "Dans quelles communes de Genève intervenez-vous ?",
+        acceptedAnswer: {
+          "@type": "Answer",
+          text: "Nous intervenons dans tout le canton de Genève : Genève centre, Carouge, Lancy, Meyrin, Vernier, Onex, Thônex, Chêne-Bougeries, Cologny, Grand-Saconnex et toutes les communes environnantes.",
+        },
+      },
+      {
+        "@type": "Question",
+        name: "Comment nous contacter ?",
+        acceptedAnswer: {
+          "@type": "Answer",
+          text: `Vous pouvez nous contacter par téléphone au ${site.phone}, par email à ${site.email}, ou via WhatsApp pour une réponse rapide.`,
+        },
       },
     ],
   };
@@ -99,7 +126,7 @@ export default function SchemaMarkup() {
     <>
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(localBusiness) }}
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(business) }}
       />
       {serviceSchemas.map((schema, i) => (
         <script
@@ -111,6 +138,10 @@ export default function SchemaMarkup() {
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumb) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(faq) }}
       />
     </>
   );
