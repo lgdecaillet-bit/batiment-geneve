@@ -4,7 +4,7 @@ import { site } from "@/lib/config";
 
 export default function WhatsAppButton() {
   const url = `https://wa.me/${site.whatsapp}?text=${encodeURIComponent(
-    "Bonjour, je souhaite obtenir un devis."
+    "Oui, je suis intéressé par le site web."
   )}`;
 
   return (

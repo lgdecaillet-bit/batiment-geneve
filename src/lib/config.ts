@@ -10,7 +10,7 @@ export const site = {
     "Entreprise genevoise spécialisée en plâtrerie, peinture, gypserie, isolation et rénovation. Devis gratuit sous 48h.",
   phone: "+41 76 394 42 18",
   phoneHref: "tel:+41763944218",
-  whatsapp: "41763944218",
+  whatsapp: "41766138402",
   email: "(ton email)",
   address: "Genève, Suisse",
   postalCode: "1200",

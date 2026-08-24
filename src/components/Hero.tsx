@@ -34,7 +34,7 @@ export default function Hero() {
     return () => obs.disconnect();
   }, []);
 
-  const whatsappUrl = `https://wa.me/${site.whatsapp}?text=${encodeURIComponent("Bonjour, je souhaite obtenir un devis.")}`;
+  const whatsappUrl = `https://wa.me/${site.whatsapp}?text=${encodeURIComponent("Oui, je suis intéressé par le site web.")}`;
 
   return (
     <section id="top" aria-label="Plâtrerie, peinture et rénovation à Genève" className="relative min-h-[100svh] md:h-[85vh] md:min-h-[560px] md:max-h-[800px] overflow-hidden flex items-end">

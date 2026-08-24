@@ -4,7 +4,7 @@ import { Phone } from "lucide-react";
 import { site } from "@/lib/config";
 
 export default function CTABand() {
-  const whatsappUrl = `https://wa.me/${site.whatsapp}?text=${encodeURIComponent("Bonjour, je souhaite obtenir un devis.")}`;
+  const whatsappUrl = `https://wa.me/${site.whatsapp}?text=${encodeURIComponent("Oui, je suis intéressé par le site web.")}`;
 
   return (
     <section id="contact" className="cta-pattern bg-red py-12 md:py-20 px-5 md:px-[60px] text-center">

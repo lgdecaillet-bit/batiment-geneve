@@ -20,7 +20,7 @@ export default function Navbar() {
     return () => window.removeEventListener("resize", fn);
   }, []);
 
-  const whatsappUrl = `https://wa.me/${site.whatsapp}?text=${encodeURIComponent("Bonjour, je souhaite obtenir un devis.")}`;
+  const whatsappUrl = `https://wa.me/${site.whatsapp}?text=${encodeURIComponent("Oui, je suis intéressé par le site web.")}`;
 
   return (
     <nav
